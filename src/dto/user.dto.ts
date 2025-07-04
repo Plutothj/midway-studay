@@ -13,3 +13,10 @@ export class CreateUserDTO {
   @Rule(RuleType.string().optional())
   role?: string;
 }
+export class LoginUserDTO {
+  @Rule(RuleType.string().email().required())
+  email: string;
+
+  @Rule(RuleType.string().required())
+  password: string;
+}

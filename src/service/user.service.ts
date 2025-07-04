@@ -1,7 +1,7 @@
 import { Inject, Provide } from '@midwayjs/core';
 import { prisma } from '../prisma/prisma.service';
-import { CreateUserDTO } from '../dto/user.dto';
-import { hash } from 'bcryptjs';
+import { CreateUserDTO, LoginUserDTO } from '../dto/user.dto';
+import { compare, hash } from 'bcryptjs';
 import { ResponseService } from './response.service';
 
 @Provide()
@@ -34,7 +34,22 @@ export class UserService {
     return this.responseService.success(user);
   }
 
-  async getAllUsers() {
-    return await prisma.users.findMany();
+  async login(data: LoginUserDTO) {
+    const user = await prisma.users.findFirst({
+      where: { email: data.email },
+    });
+    console.log(user);
+
+    // if (!user) {
+    //   return this.responseService.fail('用户不存在');
+    // }
+
+    // const isPasswordValid = await compare(data.password, user.password_hash);
+
+    // if (!isPasswordValid) {
+    //   return this.responseService.fail('密码错误');
+    // }
+
+    return this.responseService.success(user);
   }
 }
